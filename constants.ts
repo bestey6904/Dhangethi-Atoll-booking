@@ -25,6 +25,8 @@ export const STAFF: Staff[] = [
   { id: 's3', name: 'Fazaal' },
   { id: 's4', name: 'Sliver' },
   { id: 's5', name: 'Aisha' },
+  { id: 's6', name: 'Fathu' },
+  { id: 's7', name: 'Bulky' },
 ];
 
 export const STAFF_COLORS: Record<string, { bg: string, text: string, solid: string, light: string }> = {
@@ -33,6 +35,8 @@ export const STAFF_COLORS: Record<string, { bg: string, text: string, solid: str
   's3': { bg: 'bg-rose-500', text: 'text-rose-600', solid: 'bg-rose-600', light: 'bg-rose-100' }, // Fazaal
   's4': { bg: 'bg-amber-500', text: 'text-amber-600', solid: 'bg-amber-600', light: 'bg-amber-100' }, // Sliver
   's5': { bg: 'bg-sky-500', text: 'text-sky-600', solid: 'bg-sky-600', light: 'bg-sky-100' }, // Aisha
+  's6': { bg: 'bg-violet-500', text: 'text-violet-600', solid: 'bg-violet-600', light: 'bg-violet-100' }, // Fathu
+  's7': { bg: 'bg-fuchsia-500', text: 'text-fuchsia-600', solid: 'bg-fuchsia-600', light: 'bg-fuchsia-100' }, // Bulky
 };
 
 export const STATUS_COLORS: Record<RoomStatus, string> = {
