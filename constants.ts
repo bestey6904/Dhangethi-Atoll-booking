@@ -1,4 +1,3 @@
-
 import { RoomType, Room, Staff, RoomStatus } from './types';
 
 export const ROOMS: Room[] = [
@@ -20,13 +19,16 @@ export const ROOMS: Room[] = [
 ];
 
 export const STAFF: Staff[] = [
-  { id: 's1', name: 'Bestey' },
-  { id: 's2', name: 'Faari' },
-  { id: 's3', name: 'Fazaal' },
-  { id: 's4', name: 'Sliver' },
-  { id: 's5', name: 'Aisha' },
-  { id: 's6', name: 'Fathu' },
-  { id: 's7', name: 'Bulky' },
+  { id: 's1', name: 'Bestey', pin: '6904' },
+  { id: 's2', name: 'Faari', pin: '4712' },
+  { id: 's3', name: 'Fazaal', pin: '9305' },
+  { id: 's4', name: 'Sliver', pin: '2184' },
+  { id: 's5', name: 'Aisha', pin: '6593' },
+  { id: 's6', name: 'Fathu', pin: '1047' },
+  { id: 's7', name: 'Bulky', pin: '3826' },
+  { id: 's8', name: 'Zayan', pin: '7450' },
+  { id: 's9', name: 'Mari', pin: '5918' },
+  { id: 's10', name: 'Ibbe', pin: '0632' },
 ];
 
 export const STAFF_COLORS: Record<string, { bg: string, text: string, solid: string, light: string }> = {
@@ -37,6 +39,9 @@ export const STAFF_COLORS: Record<string, { bg: string, text: string, solid: str
   's5': { bg: 'bg-sky-500', text: 'text-sky-600', solid: 'bg-sky-600', light: 'bg-sky-100' }, // Aisha
   's6': { bg: 'bg-violet-500', text: 'text-violet-600', solid: 'bg-violet-600', light: 'bg-violet-100' }, // Fathu
   's7': { bg: 'bg-fuchsia-500', text: 'text-fuchsia-600', solid: 'bg-fuchsia-600', light: 'bg-fuchsia-100' }, // Bulky
+  's8': { bg: 'bg-lime-500', text: 'text-lime-600', solid: 'bg-lime-600', light: 'bg-lime-100' }, // Zayan
+  's9': { bg: 'bg-orange-500', text: 'text-orange-600', solid: 'bg-orange-600', light: 'bg-orange-100' }, // Mari
+  's10': { bg: 'bg-teal-500', text: 'text-teal-600', solid: 'bg-teal-600', light: 'bg-teal-100' }, // Ibbe
 };
 
 export const STATUS_COLORS: Record<RoomStatus, string> = {

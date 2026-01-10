@@ -75,12 +75,12 @@ const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ rooms, onBook, onUpdate
     audioContextInRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 16000 });
     audioContextOutRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
     const outputNode = audioContextOutRef.current.createGain();
-    outputNode.connect(outputNode);
+    outputNode.connect(audioContextOutRef.current.destination);
 
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
     const config = {
-      model: 'gemini-2.5-flash-native-audio-preview-09-2025',
+      model: 'gemini-2.5-flash-native-audio-preview-12-2025',
       config: {
         responseModalities: [Modality.AUDIO],
         speechConfig: {
@@ -90,7 +90,7 @@ const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ rooms, onBook, onUpdate
         Available Rooms: ${rooms.map(r => r.name).join(', ')}.
         Current Staff: ${STAFF.find(s => s.id === activeStaffId)?.name}.
         You can:
-        1. Book one or multiple rooms. Ask for guest name, room numbers, start date, and number of nights if not provided.
+        1. Book one or multiple rooms. Ask for guest name, room numbers, start date, and number of nights if not provided. Note: Verification via 4-digit manual PIN is still required after tool use.
         2. Change room status (Ready, Occupied, Cleaning, Out of Order).
         3. Give hotel status summaries.
         Be professional, brief, and confirm actions before and after execution.`,

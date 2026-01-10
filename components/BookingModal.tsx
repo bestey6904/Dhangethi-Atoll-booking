@@ -32,11 +32,15 @@ const BookingModal: React.FC<BookingModalProps> = ({
   const [duration, setDuration] = useState(1);
   const [staffId, setStaffId] = useState(STAFF[0].id);
   const [notes, setNotes] = useState('');
+  const [pin, setPin] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   // Sync selectedRoomIds when selectedRoomId prop changes or modal opens
   useEffect(() => {
     if (isOpen) {
       setSelectedRoomIds(selectedRoomId ? [selectedRoomId] : []);
+      setPin('');
+      setError(null);
     }
   }, [isOpen, selectedRoomId]);
 
@@ -63,7 +67,21 @@ const BookingModal: React.FC<BookingModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!guestName || !startDate || !endDate || selectedRoomIds.length === 0) return;
+    setError(null);
+
+    if (!guestName || !startDate || !endDate || selectedRoomIds.length === 0) {
+      setError("Please fill in all required fields.");
+      return;
+    }
+
+    const selectedStaff = STAFF.find(s => s.id === staffId);
+    if (!selectedStaff) return;
+
+    if (pin !== selectedStaff.pin) {
+      setError("Invalid Security PIN for " + selectedStaff.name);
+      return;
+    }
+
     onSubmit({ roomIds: selectedRoomIds, guestName, startDate, endDate, staffId, notes });
     onClose();
   };
@@ -80,7 +98,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
         <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
           <div>
             <h3 className="text-lg font-bold text-slate-800">New Booking</h3>
-            <p className="text-xs text-slate-500">Create entries for one or multiple rooms</p>
+            <p className="text-xs text-slate-500">Secure entry verification required</p>
           </div>
           <button onClick={onClose} className="text-slate-400 hover:text-slate-600">
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -90,6 +108,12 @@ const BookingModal: React.FC<BookingModalProps> = ({
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
+          {error && (
+            <div className="bg-rose-50 border border-rose-100 text-rose-600 px-4 py-3 rounded-xl text-sm font-bold animate-pulse">
+              {error}
+            </div>
+          )}
+          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
               <div>
@@ -137,17 +161,31 @@ const BookingModal: React.FC<BookingModalProps> = ({
                 </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">Handled By Staff</label>
-                <select
-                  value={staffId}
-                  onChange={(e) => setStaffId(e.target.value)}
-                  className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none"
-                >
-                  {STAFF.map(staff => (
-                    <option key={staff.id} value={staff.id}>{staff.name}</option>
-                  ))}
-                </select>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="col-span-1">
+                  <label className="block text-sm font-semibold text-slate-700 mb-1">Staff Member</label>
+                  <select
+                    value={staffId}
+                    onChange={(e) => setStaffId(e.target.value)}
+                    className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
+                  >
+                    {STAFF.map(staff => (
+                      <option key={staff.id} value={staff.id}>{staff.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="col-span-1">
+                  <label className="block text-sm font-semibold text-slate-700 mb-1">Security PIN</label>
+                  <input
+                    type="password"
+                    maxLength={4}
+                    required
+                    value={pin}
+                    onChange={(e) => setPin(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                    className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none text-center tracking-[0.5em] font-black"
+                    placeholder="••••"
+                  />
+                </div>
               </div>
             </div>
 
@@ -205,10 +243,10 @@ const BookingModal: React.FC<BookingModalProps> = ({
             </button>
             <button
               type="submit"
-              disabled={selectedRoomIds.length === 0}
+              disabled={selectedRoomIds.length === 0 || pin.length < 4}
               className="flex-[2] px-4 py-2.5 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 shadow-lg shadow-indigo-100 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Book {selectedRoomIds.length} Room{selectedRoomIds.length !== 1 ? 's' : ''} • {duration} Night{duration !== 1 ? 's' : ''}
+              Verify & Book {selectedRoomIds.length} Room{selectedRoomIds.length !== 1 ? 's' : ''}
             </button>
           </div>
         </form>

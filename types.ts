@@ -21,6 +21,7 @@ export interface Room {
 export interface Staff {
   id: string;
   name: string;
+  pin: string; // 4-digit security code
 }
 
 export interface Booking {
